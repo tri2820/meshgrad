@@ -1,10 +1,16 @@
 // Generate a random hue from 0 - 360
-const getColor = (): number => {
-  return Math.round(Math.random() * 360);
+const random = (seed?: number) => {
+  if (seed == undefined) return Math.random();
+  var x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+}
+
+const getColor = (hash?: number): number => {
+  return Math.round(random(hash) * 360);
 };
 
-const getPercent = (value: number): number => {
-  return Math.round((Math.random() * (value * 100)) % 100);
+const getPercent = (value: number, hash?: number): number => {
+  return Math.round((random(hash) * (value * 100)) % 100);
 };
 
 const getHashPercent = (
@@ -86,7 +92,7 @@ const genGrad = (length: number, colors: string[], hash?: number): string[] => {
   return Array.from({ length }, (_, i) => {
     return `radial-gradient(at ${
       hash ? getHashPercent(i, hash, length) : getPercent(i)
-    }% ${hash ? getHashPercent(i * 10, hash, length) : getPercent(i * 10)}%, ${
+    }% ${hash ? getHashPercent(i * 10, hash, length) : getPercent(i * 10, hash)}%, ${
       colors[i]
     } 0px, transparent 55%)\n`;
   });
@@ -94,7 +100,7 @@ const genGrad = (length: number, colors: string[], hash?: number): string[] => {
 
 const genStops = (length: number, baseColor?: number, hash?: number) => {
   // get the color for the radial gradient
-  const colors = genColors(length, baseColor ? baseColor : getColor());
+  const colors = genColors(length, baseColor ? baseColor : getColor(hash));
   // generate the radial gradient
   const proprieties = genGrad(length, colors, hash ? hash : undefined);
   return [colors[0], proprieties.join(",")];
