@@ -4,8 +4,7 @@
   "scripts": {
     "build": "pnpm -F meshgrad build",
     "dev": "pnpm -F meshgrad build --watch",
-    "website": "pnpm -F meshgrad-website dev",
-    "preinstall": "npx only-allow pnpm"
+    "website": "pnpm -F meshgrad-website dev"
   },
   "devDependencies": {
     "tsup": "6.2.1",
